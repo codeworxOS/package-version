@@ -12,6 +12,7 @@ pool:
 variables:
   major: 1
   minor: 0
+  prerelease:
   packageName: 'Codeworx.PackageVersion'
   project: 'Codeworx.PackageVersion/Codeworx.PackageVersion.csproj'
   buildPlatform: 'Any CPU'
@@ -30,7 +31,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'package-version'
-    arguments: '$(packageName) -m $(major) -n $(minor) -p $(prerelease) -o DevOps'
+    arguments: '$(packageName) -m $(major) -n $(minor) -o DevOps -p $(prerelease)' 
 
 - task: DotNetCoreCLI@2
   displayName: "run dotnet pack"
