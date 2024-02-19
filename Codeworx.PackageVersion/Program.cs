@@ -119,7 +119,7 @@ internal class Program
                         }
                     }
 
-                    if (result == null || result.Revision < nextPath)
+                    if (result == null || result.Revision <= nextPath)
                     {
                         result = new NextVersionResult(options.Major, options.Minor, nextBuild, nextPath, options.PreRelease);
                     }

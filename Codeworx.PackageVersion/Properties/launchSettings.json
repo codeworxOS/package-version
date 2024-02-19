@@ -2,7 +2,7 @@
   "profiles": {
     "Codeworx.PackageVersion": {
       "commandName": "Project",
-      "commandLineArgs": "\"Codeworx.Identity\" -m 1 -n 0 -p rc1"
+      "commandLineArgs": "\"Codeworx.PackageVersion\" -m 1 -n 0"
     }
   }
 }
