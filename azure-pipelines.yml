@@ -21,7 +21,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'tool'
-    arguments: 'install Codeworx.PackageVersion --version 1.0.0-beta1-00000 -g'
+    arguments: 'install Codeworx.PackageVersion -g'
 
 - task: DotNetCoreCLI@2
   displayName: "Get next PackageVersion"
