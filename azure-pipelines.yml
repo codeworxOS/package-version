@@ -1,0 +1,57 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  major: 1
+  minor: 0
+  packageName: 'Codeworx.PackageVersion'
+  project: 'Codeworx.PackageVersion/Codeworx.PackageVersion.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: "Install package-version tool"
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'install Codeworx.PackageVersion --version 1.0.0-beta1-00000 -g'
+
+- task: DotNetCoreCLI@2
+  displayName: "Get next PackageVersion"
+  inputs:
+    command: 'custom'
+    custom: 'package-version'
+    arguments: '$(packageName) -m $(major) -n $(minor) -p $(prerelease) -o DevOps'
+
+- task: DotNetCoreCLI@2
+  displayName: "run dotnet pack"
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(project)'
+    configuration: '$(buildConfiguration)'
+    versioningScheme: 'off'
+    buildProperties: 'Version=$(PackageVersion);FileVersion=$(PackageVersionFileVersion);AssemblyVersion=$(major).0.0.0'
+    verbosityPack: 'Quiet'
+
+- task: Bash@3
+  displayName: "Update build version"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      echo '##vso[build.updatebuildnumber]$(PackageVersion)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
